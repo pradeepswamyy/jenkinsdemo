@@ -1,13 +1,25 @@
-//from: https://www.jenkins.io/doc/book/pipeline/jenkinsfile
-//Jenkinsfile (Declarative Pipeline)
-
 pipeline {
     agent any
 
+    environment {
+        GITHUB_CREDENTIALS = credentials('github_credentials')
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    git(
+                        url: 'https://github.com/crchende/jenkinsdemo.git',
+                        credentialsId: "${GITHUB_CREDENTIALS}"
+                    )
+                }
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building..'
+                // Add your build steps here
             }
         }
         stage('Test') {
@@ -19,6 +31,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                // Add your deploy steps here
             }
         }
     }
